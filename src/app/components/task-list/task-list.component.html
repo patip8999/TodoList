@@ -1,8 +1,8 @@
 
-erdfvcrered
+
 
 <div class="task-list-container container mt-5">
-    <h2 class="title text-center mb-4">Lista zadań Todoist</h2>
+    <h2 class="title text-center mb-4">Task List</h2>
   
     <ul class="list-group mb-4">
       @for (task of tasks(); track task.id) {
@@ -21,16 +21,16 @@ erdfvcrered
           
           <div class="btn-group" role="group">
             <button class="btn btn-danger btn-sm">
-              Usuń
+              Delete
             </button>
             
             <button class="btn btn-info btn-sm">
-              Opis
+              Description
             </button>
           
             <button class="btn btn-secondary btn-sm"  data-bs-toggle="modal"
             data-bs-target="#exampleModal"  >
-              Edytuj na żywo
+              Live edit
             </button>
            
           </div>
