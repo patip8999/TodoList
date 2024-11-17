@@ -10,13 +10,10 @@ import { NavbarComponent } from "./components/UI/navbar/navbar.component";
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-<<<<<<< Updated upstream
   title = 'TodoList';
-=======
   
   currentDate: Date = new Date();
   ngOnInit(): void {
     this.currentDate = new Date(); 
   }
->>>>>>> Stashed changes
 }
