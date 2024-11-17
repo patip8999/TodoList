@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg bg-info-subtle shadow">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <strong>{{ title }}</strong>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" [routerLink]="['']">TaskList</a>
+          </li>
+          <ng-content select="[nav-links]"></ng-content>
+        </ul>
+  
+        <div class="d-flex justify-content-center w-100">
+          <div class="btn-group">
+            <ng-content select="[category-buttons]"></ng-content>
+          </div>
+        </div>
+  
+        <form class="d-flex ms-auto" role="form">
+          <ng-content select="[form]"></ng-content>
+        </form>
+  
+       
+        <div class="navbar-date ms-3">
+            <strong>{{ currentDate }}</strong>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
