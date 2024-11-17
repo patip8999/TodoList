@@ -6,6 +6,7 @@ import { TrunctePipe } from '../../Pipes/truncte.pipe';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-task-list',
@@ -16,8 +17,16 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class TaskListComponent {
 taskService: TasksService = inject(TasksService);
-tasks: Signal<TaskModel[]> = toSignal(this.taskService.getTasks(), { initialValue: []})
 
+tasks$: Observable<TaskModel[]> = this.taskService.getTasks()
 
+deleteTask(taskId: string): void {
+  this.taskService.deleteTask(taskId).subscribe(() => {
+    console.log('Zadanie zostało pomyślnie usunięte.');
+    
+   
+    this.tasks$ = this.taskService.getTasks();
+  });
+}
 
 }

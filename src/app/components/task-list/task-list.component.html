@@ -5,7 +5,7 @@
     <h2 class="title text-center mb-4">Task List</h2>
   
     <ul class="list-group mb-4">
-      @for (task of tasks(); track task.id) {
+      @for (task of tasks$ | async; track task.id) {
         
         <li
         class="list-group-item d-flex justify-content-between align-items-center border-0 rounded shadow-sm mb-2"
@@ -20,7 +20,7 @@
           
           
           <div class="btn-group" role="group">
-            <button class="btn btn-danger btn-sm">
+            <button class="btn btn-danger btn-sm"(click)="deleteTask(task.id)">
               Delete
             </button>
             
