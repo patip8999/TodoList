@@ -10,5 +10,5 @@ import { RouterModule } from '@angular/router';
 })
 export class NavbarComponent {
   @Input() title: string = ''; 
-  @Input() currentDate: Date = new Date();  
+  @Input() currentDate: string = ''  
 }
