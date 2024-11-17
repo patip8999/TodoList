@@ -4,11 +4,12 @@ import { NavbarComponent } from "./components/UI/navbar/navbar.component";
 
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { DateFormatPipe } from './Pipes/date-format.pipe';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, NavbarComponent, DateFormatPipe, AsyncPipe, CommonModule],
+  imports: [RouterOutlet, RouterModule, NavbarComponent, DateFormatPipe, AsyncPipe, CommonModule, HttpClientModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
