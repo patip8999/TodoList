@@ -2,7 +2,7 @@
 <app-card>
   <div card-title>
     <h2 class="task-detail-title text-center mb-4 text-white">
-      Szczegóły zadania
+      Task detail
     </h2>
   </div>
 
@@ -10,21 +10,21 @@
   <div card-input>
     <div class="task-detail">
       <div class="detail-item">
-        <span class="detail-label">Treść:</span>
+        <span class="detail-label">Content:</span>
         <p class="detail-value">{{ task.content }}</p>
       </div>
     </div>
 
     <div class="task-detail">
       <div class="detail-item">
-        <span class="detail-label">Opis:</span>
+        <span class="detail-label">Description:</span>
         <p class="detail-value">{{ task.description || 'Brak opisu' }}</p>
       </div>
     </div>
 
     <div class="task-detail">
       <div class="detail-item">
-        <span class="detail-label">Data wykonania:</span>
+        <span class="detail-label">Date:</span>
         <p class="detail-value">
           {{ task.due ? formatDate(task.due.date) : 'Brak daty' }}
         </p>
@@ -33,7 +33,7 @@
 
     <div class="task-detail">
       <div class="detail-item">
-        <span class="detail-label">Priorytet:</span>
+        <span class="detail-label">Priority:</span>
         <span class="detail-value" [ngClass]="{
           'high-priority': task.priority === 4,
           'medium-priority': task.priority === 3,

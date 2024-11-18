@@ -91,8 +91,9 @@
   
  
   .d-flex .btn-success {
-    background-color: #254636; 
+    background-color: #ffffff; 
     border-color: #254636; 
+    color: #254636;
     padding: 12px 24px;
     border-radius: 30px;
     font-size: 1rem;
@@ -100,8 +101,9 @@
     font-weight: 500;
   }
   .d-flex .btn-success:hover {
-    background-color: #388e3c; 
-    border-color: #388e3c;
+    background-color: #254636; 
+    border-color: white;
+    color: white !important;
   }
  
   .task-list-container {
