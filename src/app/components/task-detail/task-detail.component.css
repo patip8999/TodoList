@@ -1,0 +1,78 @@
+
+.task-detail-card {
+    max-width: 700px; 
+    margin: 0 auto;   
+    padding: 20px;    
+    border-radius: 12px; 
+    background: linear-gradient(135deg, #e0f7fa, #254636); 
+  }
+  
+  
+  .task-detail-title {
+    font-size: 1.8rem; 
+    font-weight: 700;
+    color: white; 
+    text-align: center;
+  }
+  
+  
+  .task-detail {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1); 
+    border-radius: 10px;
+  }
+  
+  
+  .detail-item {
+    margin-bottom: 15px; 
+  }
+  
+  .detail-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff; 
+  }
+  
+  .detail-value {
+    font-size: 1rem;
+    color: white;
+    padding-left: 10px;
+  }
+  
+ 
+  .detail-item p {
+    margin-top: 5px;
+    margin-bottom: 0;
+    font-weight: 500;
+  }
+  
+  
+  .high-priority {
+    color: #d32f2f;
+    font-weight: bold;
+  }
+  
+  .medium-priority {
+    color: #ff9800; 
+    font-weight: bold;
+  }
+  
+  .low-priority {
+    color: #4caf50; 
+    font-weight: bold;
+  }
+  
+  .very-low-priority {
+    color: #81c784; 
+    font-weight: bold;
+  }
+  .btn-light {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    background-color: #ffffff;
+    color: #254636; 
+    border: none;
+    transition: all 0.3s ease;
+  }
+  

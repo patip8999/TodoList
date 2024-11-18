@@ -7,11 +7,12 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [TrunctePipe, AsyncPipe, CommonModule, FormsModule, HttpClientModule],
+  imports: [TrunctePipe, AsyncPipe, CommonModule, FormsModule, HttpClientModule, RouterModule],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
 })

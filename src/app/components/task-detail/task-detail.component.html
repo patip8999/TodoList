@@ -1,0 +1,47 @@
+<div class="container mt-5">
+  <div class="card task-detail-card">
+    <div class="card-body">
+      <h2 class="task-detail-title text-center mb-4 text-white">
+        Szczegóły zadania
+      </h2>
+      @if (task ; as task) {
+      <div class="task-detail">
+        <div class="detail-item">
+          <span class="detail-label text-center">Treść:</span>
+          <p class="detail-value">{{ task.content }}</p>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Opis:</span>
+          <p class="detail-value">{{ task.description || "Brak opisu" }}</p>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Data wykonania:</span>
+          <p class="detail-value">
+            {{ task.due ? formatDate(task.due.date) : "Brak daty" }}
+          </p>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Priorytet:</span>
+          <span
+            class="detail-value"
+            [ngClass]="{
+              'high-priority': task.priority === 4,
+              'medium-priority': task.priority === 3,
+              'low-priority': task.priority === 2,
+              'very-low-priority': task.priority === 1
+            }"
+          >
+            {{ task.priority }}
+          </span>
+        </div>
+      </div>
+      }
+      <div action-button>
+        <button class="btn btn-light">Edit</button>
+      </div>
+    </div>
+  </div>
+</div>
