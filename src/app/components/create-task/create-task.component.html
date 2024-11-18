@@ -1,1 +1,72 @@
-<p>create-task works!</p>
+<div class="container mt-5">
+<app-card>
+    <div card-title>
+      <h2 class="text-center">Utwórz zadanie</h2>
+    </div>
+  
+    <div card-input>
+     
+        <form (ngSubmit)="addTask(model.name, model.description, model.dueDate, model.priority.toString())">
+        <div class="form-group">
+          <label for="name">Nazwa zadania:</label>
+          <input
+            id="name"
+            class="form-control"
+            type="text"
+            [(ngModel)]="model.name"
+            name="name"
+            required
+          />
+        </div>
+  
+        <div class="form-group">
+            <label for="description">Opis zadania:</label>
+            <textarea 
+              id="description" 
+              class="form-control" 
+              [(ngModel)]="model.description" 
+              name="description" 
+              rows="4" 
+              required>
+            </textarea>
+          </div>
+        <div class="form-group">
+          <label for="dueDate">Data wykonania:</label>
+          <input
+            id="dueDate"
+            class="form-control"
+            type="date"
+            [(ngModel)]="model.dueDate"
+            name="dueDate"
+            required
+          />
+        </div>
+  
+        <div class="form-group">
+          <label for="priority">Priorytet:</label>
+          <select
+            id="priority"
+            class="form-control"
+            [(ngModel)]="model.priority"
+            name="priority"
+            required
+          >
+            <option value="null" disabled selected>Wybierz priorytet</option>
+            <option value="1">Bardzo niski</option>
+            <option value="2">Niski</option>
+            <option value="3">Średni</option>
+            <option value="4">Wysoki</option>
+          </select>
+        </div>
+  
+        <div class="form-group text-center mt-3">
+          <button type="submit" class="btn btn-primary">Dodaj zadanie</button>
+        </div>
+      </form>
+    </div>
+  
+    <div card-buttons>
+      <button class="btn btn-light" (click)="router.navigate(['/'])">Anuluj</button>
+    </div>
+  </app-card>
+</div>

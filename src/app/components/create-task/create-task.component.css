@@ -1,0 +1,30 @@
+.btn-light {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    background-color: #ffffff;
+    color: #254636; 
+    border: none;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-light:hover {
+    background-color: #254636; 
+    color: white;
+  }
+  button[type="submit"] {
+    background-color: #ffffff !important; 
+    color: #254636 !important; 
+    border: 2px solid #254636 !important; 
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    outline: none !important; 
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #254636 !important; 
+    color: white !important; 
+  }

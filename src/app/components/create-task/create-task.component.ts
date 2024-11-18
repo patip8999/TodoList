@@ -3,16 +3,17 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TasksService } from '../../Services/tasks.service';
+import { CardComponent } from '../UI/card/card.component';
 export interface TaskForm {
   readonly name: string;
   readonly description: string;
   readonly dueDate: string;
-  readonly priority: number | null;
+  readonly priority: number 
 }
 @Component({
   selector: 'app-create-task',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CardComponent],
   templateUrl: './create-task.component.html',
   styleUrl: './create-task.component.css',
 })
@@ -24,24 +25,19 @@ export class CreateTaskComponent {
     name: '',
     description: '',
     dueDate: '',
-    priority: null,
+    priority:  0,
   };
-  addTask(
-    name: string,
-    description: string,
-    dueDate: string,
-    priority: string
-  ): void {
+  addTask(name: string, description: string, dueDate: string, priority: string): void {
     const taskData = {
       content: name,
       description: description,
       due_date: dueDate,
       priority: parseInt(priority, 10),
     };
-
+  
     this.taskService.addTask(taskData).subscribe((task) => {
       this.tasks.push(task);
-      this.router.navigate(['/']);
+      this.router.navigate(['/']); 
     });
   }
 }
