@@ -1,0 +1,19 @@
+<div class="card custom-card">
+    <div class="card-header">
+      <ng-content select="[card-title]"></ng-content>
+    </div>
+  
+    <div class="card-body">
+      <div class="input-section">
+        <ng-content select="[card-input1]"></ng-content>
+        <ng-content select="[card-input2]"></ng-content>
+        <ng-content select="[card-input3]"></ng-content>
+        <ng-content select="[card-input4]"></ng-content>
+      </div>
+    </div>
+  
+    <div class="card-footer">
+      <ng-content select="[card-buttons]"></ng-content>
+    </div>
+  </div>
+  

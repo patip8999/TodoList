@@ -26,7 +26,7 @@
     padding: 8px 16px;
     border-radius: 25px; 
     font-weight: 500;
-    text-transform: capitalize; /
+    text-transform: capitalize; 
     transition: all 0.3s ease;
     background-color: #254636 
     color: white;
@@ -122,7 +122,7 @@
     transition: background-color 0.3s;
   }
   .btn-primary {
-    background-color: #74897E !important; /
+    background-color: #74897E !important; 
     color: white !important; 
     border-radius: 25px;
     padding: 8px 20px;
