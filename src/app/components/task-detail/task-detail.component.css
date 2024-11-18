@@ -1,7 +1,7 @@
 
 .task-detail-card {
     max-width: 700px; 
-    margin: 0 auto;   
+    margin: 50px auto;  
     padding: 20px;    
     border-radius: 12px; 
     background: linear-gradient(135deg, #e0f7fa, #254636); 

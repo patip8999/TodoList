@@ -4,11 +4,12 @@ import { TaskModel } from '../../Models/task.model';
 import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CardComponent } from '../UI/card/card.component';
 
 @Component({
   selector: 'app-task-detail',
   standalone: true,
-  imports: [AsyncPipe, CommonModule, FormsModule],
+  imports: [AsyncPipe, CommonModule, FormsModule, CardComponent],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css',
   providers: [DatePipe],
