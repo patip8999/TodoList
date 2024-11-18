@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, signal, Signal, WritableSignal } from '@angular/core';
 import { TasksService } from '../../Services/tasks.service';
 import { TaskModel } from '../../Models/task.model';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -23,42 +23,72 @@ import { CardComponent } from '../UI/card/card.component';
     RouterModule,
     ModalComponent,
     RouterModule,
-    CardComponent
+    CardComponent,
   ],
   templateUrl: './task-list.component.html',
-  styleUrl: './task-list.component.css',
+  styleUrls: ['./task-list.component.css'], // Poprawiona nazwa właściwości
   providers: [DatePipe],
 })
 export class TaskListComponent {
-  taskService: TasksService = inject(TasksService);
+  // Inicjalizacja serwisu
+  private taskService = inject(TasksService);
+  private datePipe = inject(DatePipe);
+
+  // Sygnały
   public visibleTaskId = signal<number | undefined>(undefined);
+  public tasksSignal: WritableSignal<TaskModel[]> = signal<TaskModel[]>([]);
+  public selectedTask = signal<TaskModel | undefined>(undefined);
+  public showModal = false;
+
+  // Obsługa ładowania
+  public isLoading: Signal<boolean> = computed(() => this.tasksSignal().length === 0);
+
+  // Formatowanie daty
   formatDate(date: string | undefined): string {
     if (!date) {
       return 'Brak daty';
     }
-    // dalsze przetwarzanie daty
-    return new Date(date).toLocaleDateString(); // przykładowe przetwarzanie daty
+    return new Date(date).toLocaleDateString(); // Przykładowe przetwarzanie daty
   }
-  tasks$: Observable<TaskModel[]> = this.taskService.getTasks();
-  public selectedTask = signal<TaskModel | undefined>(undefined)
-  private datePipe = inject(DatePipe);
-  public tasksSignal: WritableSignal<TaskModel[]> = signal<
-  TaskModel[]
->([]);
 
+  // Pobieranie zadań z serwisu
+  public tasks$: Observable<TaskModel[]> = this.taskService.getTasks();
+
+  // Usuwanie zadania
   deleteTask(taskId: string): void {
     this.taskService.deleteTask(taskId).subscribe(() => {
       console.log('Zadanie zostało pomyślnie usunięte.');
-
-      this.tasks$ = this.taskService.getTasks();
+      this.tasks$ = this.taskService.getTasks(); // Odświeżenie zadań
     });
   }
+
+  // Przełączanie widoczności szczegółów zadania
   public toggle(taskId: number, task: TaskModel): void {
     this.visibleTaskId.set(taskId);
-    this.selectedTask.set(task)
+    this.selectedTask.set(task);
   }
-  public isLoading: Signal<boolean> = computed(
-    () => this.tasksSignal() === null
-  );
 
+  // Otwieranie modala
+  openModal(task: TaskModel) {
+    this.selectedTask.set(task);
+    this.showModal = true;
+  }
+
+  // Zamknięcie modala
+  closeModal() {
+    console.log('Zamykam modal');
+    this.showModal = false;
+  }
+
+  // Zapisywanie zadania
+  saveTask() {
+    console.log('Task saved:', this.selectedTask());
+    this.closeModal();
+  }
+
+  // Anulowanie edycji
+  cancelEdit() {
+    console.log('Edit cancelled');
+    this.closeModal();
+  }
 }

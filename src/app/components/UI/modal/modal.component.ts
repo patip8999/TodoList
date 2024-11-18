@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TaskModel } from '../../../Models/task.model';
 
 @Component({
   selector: 'app-modal',
@@ -8,8 +9,13 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './modal.component.css'
 })
 export class ModalComponent {
+  @Input() task: TaskModel | undefined;
+  @Input() modalTitle: string = '';
+  @Input() modalData: any;
+  @Input() onSave: () => void = () => {};
+  @Input() onCancel: () => void = () => {};
   @Output() close = new EventEmitter<void>();
   onClose() {
-      this.close.emit();
+    this.close.emit(); // Emituje zdarzenie zamknięcia
   }
 }

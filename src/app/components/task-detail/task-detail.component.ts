@@ -16,7 +16,7 @@ import { CardComponent } from '../UI/card/card.component';
 })
 export class TaskDetailComponent {
   task: TaskModel | null = null;
-
+  
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private taskservice: TasksService = inject(TasksService);
   private datePipe = inject(DatePipe);
@@ -32,5 +32,5 @@ export class TaskDetailComponent {
   }
   formatDate(date: string): string {
     return this.datePipe.transform(date, 'dd/MM/yyyy') || '';
-  }
-}
+  }}
+  

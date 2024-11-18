@@ -60,63 +60,17 @@
   </div>
 </div>
 
-<app-modal>
-  <div modal-header>
-    <h2 class="task-detail-title text-center mb-4 text-white">
-      Task detail
-    </h2>
-  </div>
-
+<app-modal [modalTitle]="'Task Detail'" [modalData]="selectedTask">
+  <div modal-title>Task Details</div>
   <div modal-body>
-    @if (selectedTask()) {
-      <app-card>
-        <div card-title>
-          <h2 class="task-detail-title text-center mb-4 text-white">Task detail</h2>
-        </div>
-
-        <div card-input>
-          <div class="task-detail">
-            <div class="detail-item">
-              <span class="detail-label">Content:</span>
-              <p class="detail-value">{{ selectedTask()?.content }}</p>
-            </div>
-          </div>
-
-          <div class="task-detail">
-            <div class="detail-item">
-              <span class="detail-label">Description:</span>
-              <p class="detail-value">{{ selectedTask()?.description || 'Brak opisu' }}</p>
-            </div>
-          </div>
-
-          <div class="task-detail">
-            <div class="detail-item">
-              <span class="detail-label">Date:</span>
-              <p class="detail-value">
-                {{ selectedTask()?.due?.date ? formatDate(selectedTask()?.due?.date) : 'Brak daty' }}
-              </p>
-            </div>
-          </div>
-
-          <div class="task-detail">
-            <div class="detail-item">
-              <span class="detail-label">Priority:</span>
-              <span class="detail-value" [ngClass]="{
-                'high-priority': selectedTask()?.priority === 4,
-                'medium-priority': selectedTask()?.priority === 3,
-                'low-priority': selectedTask()?.priority === 2,
-                'very-low-priority': selectedTask()?.priority === 1
-              }">
-                {{ selectedTask()?.priority }}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div card-buttons>
-          <button class="btn btn-light">Edit</button>
-        </div>
-      </app-card>
-    }
+    <p><strong>Content:</strong> {{ selectedTask()?.content }}</p>
+    <p><strong>Description:</strong> {{ selectedTask()?.description || 'Brak opisu' }}</p>
+    <p><strong>Date:</strong> 
+      {{ selectedTask()?.due?.date ? formatDate(selectedTask()?.due?.date) : 'Brak daty' }}
+    </p>
+    <p><strong>Priority:</strong> {{ selectedTask()?.priority }}</p>
+  </div>
+  <div modal-footer>
+    <button class="btn btn-light"data-bs-dismiss="modal" >Close</button>
   </div>
 </app-modal>
