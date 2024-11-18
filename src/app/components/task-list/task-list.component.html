@@ -63,14 +63,62 @@
 <app-modal [modalTitle]="'Task Detail'" [modalData]="selectedTask">
   <div modal-title>Task Details</div>
   <div modal-body>
-    <p><strong>Content:</strong> {{ selectedTask()?.content }}</p>
-    <p><strong>Description:</strong> {{ selectedTask()?.description || 'Brak opisu' }}</p>
-    <p><strong>Date:</strong> 
-      {{ selectedTask()?.due?.date ? formatDate(selectedTask()?.due?.date) : 'Brak daty' }}
-    </p>
-    <p><strong>Priority:</strong> {{ selectedTask()?.priority }}</p>
+    <!-- Dodajemy komponent app-card w modalu -->
+    <div class="container mt-5">
+      <app-card>
+        <div card-title>
+          <h2 class="task-detail-title text-center mb-4 text-white">
+            Task detail
+          </h2>
+        </div>
+
+        @if (selectedTask() ; as task) {
+        <div card-input>
+          <div class="task-detail">
+            <div class="detail-item">
+              <span class="detail-label"><strong>Content:</strong></span>
+              <p class="detail-value">{{ task.content }}</p>
+            </div>
+          </div>
+
+          <div class="task-detail">
+            <div class="detail-item">
+              <span class="detail-label"><strong>Description:</strong></span>
+              <p class="detail-value">{{ task.description || 'Brak opisu' }}</p>
+            </div>
+          </div>
+
+          <div class="task-detail">
+            <div class="detail-item">
+              <span class="detail-label"><strong>Date:</strong></span>
+              <p class="detail-value">
+                {{ task.due ? formatDate(task.due.date) : 'Brak daty' }}
+              </p>
+            </div>
+          </div>
+
+          <div class="task-detail">
+            <div class="detail-item">
+              <span class="detail-label"><strong>Priority:</strong>:</span>
+              <span class="detail-value" [ngClass]="{
+                'high-priority': task.priority === 4,
+                'medium-priority': task.priority === 3,
+                'low-priority': task.priority === 2,
+                'very-low-priority': task.priority === 1
+              }">
+                {{ task.priority }}
+              </span>
+            </div>
+          </div>
+        </div>
+        }
+        <div card-buttons>
+          <button class="btn btn-light" >Edit</button>
+        </div>
+      </app-card>
+    </div>
   </div>
   <div modal-footer>
-    <button class="btn btn-light"data-bs-dismiss="modal" >Close</button>
+    <button class="btn btn-light" data-bs-dismiss="modal">Close</button>
   </div>
 </app-modal>

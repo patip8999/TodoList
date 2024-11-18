@@ -91,4 +91,9 @@ export class TaskListComponent {
     console.log('Edit cancelled');
     this.closeModal();
   }
+  openEditModal(task: TaskModel) {
+    // Tutaj możesz przejść do formularza edycji
+    console.log('Edytowanie zadania', task);
+    // Działania związane z edytowaniem zadania
+  }
 }
