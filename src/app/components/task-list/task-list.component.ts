@@ -16,6 +16,7 @@ import { ModalComponent } from '../UI/modal/modal.component';
 import { CardComponent } from '../UI/card/card.component';
 import { EditTaskModalComponent } from '../edit-task-modal/edit-task-modal.component';
 import { from, switchMap } from 'rxjs';
+import { DragAndDropDirective } from '../../directives/drag-and-drop.directive';
 
 @Component({
   selector: 'app-task-list',
@@ -29,6 +30,7 @@ import { from, switchMap } from 'rxjs';
     ModalComponent,
     CardComponent,
     EditTaskModalComponent,
+    DragAndDropDirective
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css'],
@@ -58,7 +60,22 @@ export class TaskListComponent {
       this.tasksSignal.set(tasks);
     });
   }
-
+  onTaskReordered(event: { from: string, to: string }): void {
+    // Znajdź indeksy zadań na podstawie ich ID
+    const fromIndex = this.tasksSignal().findIndex(task => task.id === event.from);
+    const toIndex = this.tasksSignal().findIndex(task => task.id === event.to);
+  
+    if (fromIndex !== -1 && toIndex !== -1) {
+      const reorderedTasks = [...this.tasksSignal()];
+  
+      // Przemieszczanie zadania w tablicy
+      const [movedTask] = reorderedTasks.splice(fromIndex, 1);
+      reorderedTasks.splice(toIndex, 0, movedTask);
+  
+      // Zaktualizowanie sygnału z nową kolejnością
+      this.tasksSignal.set(reorderedTasks);
+    }
+  }
   openEditModal(task: TaskModel): void {
     this.editableTask.set({ ...task });
     this.showModal.set(true);

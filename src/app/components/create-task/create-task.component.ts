@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TasksService } from '../../Services/tasks.service';
 import { CardComponent } from '../UI/card/card.component';
+import { FormComponent } from '../UI/form/form.component';
 export interface TaskForm {
   readonly name: string;
   readonly description: string;
@@ -13,7 +14,7 @@ export interface TaskForm {
 @Component({
   selector: 'app-create-task',
   standalone: true,
-  imports: [CommonModule, FormsModule, CardComponent],
+  imports: [CommonModule, FormsModule, CardComponent, FormComponent],
   templateUrl: './create-task.component.html',
   styleUrl: './create-task.component.css',
 })

@@ -10,73 +10,87 @@
       <app-card>
         <div card-title>
           <h5 class="modal-title" id="editTaskModalLabel">Edit Task</h5>
-          
         </div>
 
         <div card-input>
-          @if (editableTask()) {
-          <form>
-            <div class="mb-3">
-              <label for="taskContent" class="form-label">Content</label>
-              <input
-                type="text"
-                class="form-control"
-                id="taskContent"
-                [(ngModel)]="editableTask().content"
-                name="content"
-              />
+          <app-form>
+            <div form-field="field1">
+              <div class="mb-3">
+                <label for="taskContent" class="form-label">Content</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="taskContent"
+                  [(ngModel)]="editableTask().content"
+                  name="content"
+                />
+              </div>
             </div>
 
-            <div class="mb-3">
-              <label for="taskDescription" class="form-label">Description</label>
-              <textarea
-                class="form-control"
-                id="taskDescription"
-                [(ngModel)]="editableTask().description"
-                name="description"
-              ></textarea>
-            </div>
-            
-            <div class="mb-3">
-              <label for="taskContent" class="form-label">Date</label>
-              <input
-                type="date"
-                class="form-control"
-                id="dueDate"
-                [(ngModel)]="editableTask().dueDate"
-                name="dueDate"
-              />
+            <div form-field="field2">
+              <div class="mb-3">
+                <label for="taskDescription" class="form-label"
+                  >Description</label
+                >
+                <textarea
+                  class="form-control"
+                  id="taskDescription"
+                  [(ngModel)]="editableTask().description"
+                  name="description"
+                ></textarea>
+              </div>
             </div>
 
-            <div class="mb-3">
-              <label for="taskPriority" class="form-label">Priority</label>
-              <select
-                class="form-select"
-                id="taskPriority"
-                [(ngModel)]="editableTask().priority"
-                name="priority"
+            <div form-field="field3">
+              <div class="mb-3">
+                <label for="taskContent" class="form-label">Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="dueDate"
+                  [(ngModel)]="editableTask().dueDate"
+                  name="dueDate"
+                />
+              </div>
+            </div>
+
+            <div form-field="field4">
+              <div class="mb-3">
+                <label for="taskPriority" class="form-label">Priority</label>
+                <select
+                  class="form-select"
+                  id="taskPriority"
+                  [(ngModel)]="editableTask().priority"
+                  name="priority"
+                >
+                  <option value="1">Very Low</option>
+                  <option value="2">Low</option>
+                  <option value="3">Medium</option>
+                  <option value="4">High</option>
+                </select>
+              </div>
+            </div>
+
+            <div form-submit-button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                (click)="saveTask()"
               >
-                <option value="1">Very Low</option>
-                <option value="2">Low</option>
-                <option value="3">Medium</option>
-                <option value="4">High</option>
-              </select>
+                Save
+              </button>
             </div>
-          </form>
-          }
+          </app-form>
         </div>
 
         <div card-buttons>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Cancel
-          </button>
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-secondary"
             data-bs-dismiss="modal"
-            (click)="saveTask()"
           >
-            Save
+            Cancel
           </button>
         </div>
       </app-card>

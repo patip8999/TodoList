@@ -1,72 +1,80 @@
 <div class="container mt-5">
-<app-card>
+  <app-card>
     <div card-title>
       <h2 class="text-center">Create Task</h2>
     </div>
-  
+
     <div card-input>
-     
-        <form (ngSubmit)="addTask(model.name, model.description, model.dueDate, model.priority.toString())">
-        <div class="form-group">
-          <label for="name">Content:</label>
-          <input
-            id="name"
-            class="form-control"
-            type="text"
-            [(ngModel)]="model.name"
-            name="name"
-            required
-          />
-        </div>
-  
-        <div class="form-group">
-            <label for="description">Description:</label>
-            <textarea 
-              id="description" 
-              class="form-control" 
-              [(ngModel)]="model.description" 
-              name="description" 
-              rows="4" 
-              required>
-            </textarea>
+      <app-form>
+        <div form-field="field1">
+          <div class="form-group">
+            <label for="name">Content:</label>
+            <input
+              id="name"
+              class="form-control"
+              type="text"
+              [(ngModel)]="model.name"
+              name="name"
+              required
+            />
           </div>
-        <div class="form-group">
-          <label for="dueDate">Date:</label>
-          <input
-            id="dueDate"
-            class="form-control"
-            type="date"
-            [(ngModel)]="model.dueDate"
-            name="dueDate"
-            required
-          />
         </div>
-  
-        <div class="form-group">
-          <label for="priority">Priority:</label>
-          <select
-            id="priority"
-            class="form-control"
-            [(ngModel)]="model.priority"
-            name="priority"
-            required
-          >
-         
-          <option value="1">Very Low</option>
-          <option value="2">Low</option>
-          <option value="3">Medium</option>
-          <option value="4">High</option>
-          </select>
+
+        <div form-field="field2">
+          <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea
+              id="description"
+              class="form-control"
+              [(ngModel)]="model.description"
+              name="description"
+              rows="4"
+              required
+            ></textarea>
+          </div>
         </div>
-  
-        <div class="form-group text-center mt-3">
-          <button type="submit" class="btn btn-primary">Dodaj zadanie</button>
+
+        <div form-field="field3">
+          <div class="form-group">
+            <label for="dueDate">Date:</label>
+            <input
+              id="dueDate"
+              class="form-control"
+              type="date"
+              [(ngModel)]="model.dueDate"
+              name="dueDate"
+              required
+            />
+          </div>
         </div>
-      </form>
+
+        <div form-field="field4">
+          <div class="form-group">
+            <label for="priority">Priority:</label>
+            <select
+              id="priority"
+              class="form-control"
+              [(ngModel)]="model.priority"
+              name="priority"
+              required
+            >
+              <option value="1">Very Low</option>
+              <option value="2">Low</option>
+              <option value="3">Medium</option>
+              <option value="4">High</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Dynamiczny przycisk -->
+        <div form-submit-button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </app-form>
     </div>
-  
+
     <div card-buttons>
-      <button class="btn btn-light" (click)="router.navigate(['/'])">Anuluj</button>
+      <button class="btn btn-light" (click)="router.navigate(['/'])">Cancel</button>
     </div>
   </app-card>
 </div>

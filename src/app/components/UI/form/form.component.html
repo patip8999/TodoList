@@ -1,0 +1,10 @@
+<form (ngSubmit)="onSubmit()" class="form-wrapper">
+  <ng-content select="[form-field='field1']"></ng-content>
+  <ng-content select="[form-field='field2']"></ng-content>
+  <ng-content select="[form-field='field3']"></ng-content>
+  <ng-content select="[form-field='field4']"></ng-content>
+
+  <div class="form-group text-center mt-3">
+    <ng-content select="[form-submit-button]"></ng-content>
+  </div>
+</form>
