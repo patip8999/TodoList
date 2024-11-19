@@ -1,0 +1,29 @@
+<div class="filter-sort-container">
+    <div class="filter-section">
+      <button (click)="toggleFilterVisibility()">Toggle Filter</button>
+  
+  
+      @if(filterVisible()) {
+        <input
+          type="text"
+          [(ngModel)]="filterText"
+          (ngModelChange)="onFilterChange($event)"
+          placeholder="Filtruj"
+          class="filter-input"
+        />
+      }
+    </div>
+  
+ 
+    <div class="sort-section">
+      @for(key of sortKeys; track key) {
+        <button
+          (click)="onSortChange(key)"
+          [class.active]="sortKey === key"
+        >
+          Sortuj po {{ key }}
+        </button>
+      }
+    </div>
+  </div>
+  

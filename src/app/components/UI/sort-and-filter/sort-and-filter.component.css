@@ -1,0 +1,53 @@
+.filter-sort-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px; /* Większa przestrzeń między elementami */
+  margin-bottom: 20px;
+}
+
+.filter-section,
+.sort-section {
+  display: flex;
+  align-items: center;
+}
+
+.filter-input {
+  margin-left: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc; /* Delikatna ramka */
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+
+.filter-input:focus {
+  border-color: #007bff; /* Kolor ramki po focus */
+  outline: none;
+}
+
+button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background-color: #007bff; /* Kolor przycisku */
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3; /* Ciemniejszy odcień przy hover */
+  border-color: #0056b3;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Efekt focus */
+}
+
+button.active {
+  background-color: #28a745; /* Zielony dla aktywnego przycisku */
+  border-color: #28a745;
+}

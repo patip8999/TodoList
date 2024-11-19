@@ -2,7 +2,6 @@ import {
   Component,
   inject,
   signal,
-  Signal,
   WritableSignal,
   computed,
 } from '@angular/core';
@@ -17,6 +16,7 @@ import { CardComponent } from '../UI/card/card.component';
 import { EditTaskModalComponent } from '../edit-task-modal/edit-task-modal.component';
 import { from, switchMap } from 'rxjs';
 import { DragAndDropDirective } from '../../directives/drag-and-drop.directive';
+import { SortAndFilterComponent } from '../UI/sort-and-filter/sort-and-filter.component';
 
 @Component({
   selector: 'app-task-list',
@@ -31,6 +31,7 @@ import { DragAndDropDirective } from '../../directives/drag-and-drop.directive';
     CardComponent,
     EditTaskModalComponent,
     DragAndDropDirective,
+    SortAndFilterComponent
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css'],
@@ -48,8 +49,6 @@ export class TaskListComponent {
   public readonly selectedTask: WritableSignal<TaskModel | undefined> =
     signal(undefined);
   public readonly showModal = signal(false);
-
-
 
   formatDate(date: string | undefined): string {
     return date ? new Date(date).toLocaleDateString() : 'Brak daty';
@@ -113,59 +112,50 @@ export class TaskListComponent {
     });
   }
 
-  sortTasksByDate(): void {
-    const sortedTasks = [...this.tasksSignal()].sort((a, b) => {
-      // Sprawdzamy, czy due.date jest dostępne, i przekształcamy na timestamp
-      const dateA = a.due?.date ? new Date(a.due.date).getTime() : Infinity; // Jeśli brak daty, ustaw na najpóźniejszą
-      const dateB = b.due?.date ? new Date(b.due.date).getTime() : Infinity;
-  
-      return dateA - dateB;
-    });
-    this.tasksSignal.set(sortedTasks);
+  onFilterChange(filterText: string): void {
+    this.filterText = filterText;
+    this.filterTasks();
   }
-  
 
-  // Sortowanie zadań po priorytecie
-  sortTasksByPriority(): void {
-    const sortedTasks = [...this.tasksSignal()].sort((a, b) => {
-      const priorityA = Number(a.priority); // Konwersja na liczbę
-      const priorityB = Number(b.priority); // Konwersja na liczbę
-      
-      return priorityA - priorityB;  // Porównanie liczbowe
-    });
-  
-    this.tasksSignal.set(sortedTasks);
-  }
-  // Pomocnicza funkcja do mapowania priorytetów na liczby
-  private getPriorityValue(priority: string): number {
-    switch (priority.toLowerCase()) {
-      case 'high': return 1;
-      case 'medium': return 2;
-      case 'low': return 3;
-      default: return 4;
-    }
+  onSortChange({ key, order }: { key: keyof TaskModel; order: 'asc' | 'desc' }): void {
+    this.sortKey = key;
+    this.sortOrder = order;
+    this.sortTasks();
   }
   public filterText: string = '';
-  public originalTasks: TaskModel[] = [];
-  // ... existing methods
-
-  // Filtrowanie zadań
   filterTasks(): void {
     if (this.filterText === '') {
-      // Jeśli pole wyszukiwania jest puste, przywracamy oryginalną listę zadań
       this.tasksSignal.set(this.originalTasks);
     } else {
-      const filteredTasks = this.originalTasks.filter(task => {
-        const searchText = this.filterText.toLowerCase();
-        return (
-          task.content.toLowerCase().includes(searchText) ||
-          (task.description && task.description.toLowerCase().includes(searchText)) ||
-          (task.dueDate && task.dueDate.toLowerCase().includes(searchText)) ||
-          task.priority.toString().toLowerCase().includes(searchText)
-        );
-      });
+      const filteredTasks = this.originalTasks.filter((task) =>
+        task.content.toLowerCase().includes(this.filterText.toLowerCase())
+      );
       this.tasksSignal.set(filteredTasks);
     }
   }
+  public originalTasks: TaskModel[] = [];
+  public sortKey: keyof TaskModel | null = null;
+  public sortOrder: 'asc' | 'desc' = 'asc';
+  sortTasks(): void {
+    const sortedTasks = [...this.tasksSignal()].sort((a, b) => {
+      if (this.sortKey) {
+        const valA = a[this.sortKey];
+        const valB = b[this.sortKey];
+  
+        // Sprawdzamy, czy valA i valB nie są null lub undefined przed porównaniem
+        const safeValA = valA != null ? valA : ''; // Domyślnie traktujemy null/undefined jako pusty ciąg
+        const safeValB = valB != null ? valB : ''; // To samo dla valB
+  
+        if (this.sortOrder === 'asc') {
+          return safeValA > safeValB ? 1 : (safeValA < safeValB ? -1 : 0);
+        } else {
+          return safeValA < safeValB ? 1 : (safeValA > safeValB ? -1 : 0);
+        }
+      }
+      return 0;
+    });
+  
+    this.tasksSignal.set(sortedTasks);
+  }
+  
 }
-
