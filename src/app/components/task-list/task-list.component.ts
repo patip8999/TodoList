@@ -64,20 +64,15 @@ export class TaskListComponent {
       this.tasksSignal.set(tasks);
     });
   }
+ 
   onTaskReordered(event: { from: string; to: string }): void {
-    const fromIndex = this.tasksSignal().findIndex(
-      (task) => task.id === event.from
-    );
-    const toIndex = this.tasksSignal().findIndex(
-      (task) => task.id === event.to
-    );
+    const fromIndex = this.tasksSignal().findIndex(task => task.id === event.from);
+    const toIndex = this.tasksSignal().findIndex(task => task.id === event.to);
 
     if (fromIndex !== -1 && toIndex !== -1) {
       const reorderedTasks = [...this.tasksSignal()];
-
       const [movedTask] = reorderedTasks.splice(fromIndex, 1);
       reorderedTasks.splice(toIndex, 0, movedTask);
-
       this.tasksSignal.set(reorderedTasks);
     }
   }
@@ -117,5 +112,37 @@ export class TaskListComponent {
     });
   }
 
+  sortTasksByDate(): void {
+    const sortedTasks = [...this.tasksSignal()].sort((a, b) => {
+      // Sprawdzamy, czy due.date jest dostępne, i przekształcamy na timestamp
+      const dateA = a.due?.date ? new Date(a.due.date).getTime() : Infinity; // Jeśli brak daty, ustaw na najpóźniejszą
+      const dateB = b.due?.date ? new Date(b.due.date).getTime() : Infinity;
+  
+      return dateA - dateB;
+    });
+    this.tasksSignal.set(sortedTasks);
+  }
+  
 
+  // Sortowanie zadań po priorytecie
+  sortTasksByPriority(): void {
+    const sortedTasks = [...this.tasksSignal()].sort((a, b) => {
+      const priorityA = Number(a.priority); // Konwersja na liczbę
+      const priorityB = Number(b.priority); // Konwersja na liczbę
+      
+      return priorityA - priorityB;  // Porównanie liczbowe
+    });
+  
+    this.tasksSignal.set(sortedTasks);
+  }
+  // Pomocnicza funkcja do mapowania priorytetów na liczby
+  private getPriorityValue(priority: string): number {
+    switch (priority.toLowerCase()) {
+      case 'high': return 1;
+      case 'medium': return 2;
+      case 'low': return 3;
+      default: return 4;
+    }
+  }
 }
+

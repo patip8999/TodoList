@@ -66,10 +66,11 @@
           </div>
         </div>
 
-        <!-- Dynamiczny przycisk -->
+        
         <div form-submit-button>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary" (click)="addTask(model.name, model.description, model.dueDate, model.priority.toString())">Submit</button>
         </div>
+        
       </app-form>
     </div>
 

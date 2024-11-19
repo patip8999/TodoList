@@ -9,7 +9,7 @@ import {
 
 @Directive({
   selector: '[appDragAndDrop]',
-  standalone: true,
+  standalone: true
 })
 export class DragAndDropDirective {
   @Output() taskReordered = new EventEmitter<{ from: string; to: string }>();
@@ -23,13 +23,11 @@ export class DragAndDropDirective {
     event.dataTransfer?.setData('index', taskId);
 
     this.renderer.setStyle(this.el.nativeElement, 'cursor', 'grab');
-    console.log('Drag started', taskId);
   }
 
   @HostListener('dragend', ['$event'])
   onDragEnd(event: DragEvent) {
     this.renderer.setStyle(this.el.nativeElement, 'cursor', 'grabbing');
-    console.log('Drag ended');
   }
 
   @HostListener('dragover', ['$event'])
@@ -49,10 +47,6 @@ export class DragAndDropDirective {
         from: draggedTaskId,
         to: targetTaskId,
       });
-
-      console.log('Drop finished', draggedTaskId, targetTaskId);
-    } else {
-      console.error('Nieprawidłowe dane podczas upuszczania zadania');
     }
   }
 }
