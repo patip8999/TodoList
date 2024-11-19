@@ -1,0 +1,86 @@
+<div
+  class="modal fade"
+  id="editTaskModal"
+  tabindex="-1"
+  aria-labelledby="editTaskModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editTaskModalLabel">Edit Task</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <form *ngIf="editableTask()">
+          <div class="mb-3">
+            <label for="taskContent" class="form-label">Content</label>
+            <input
+              type="text"
+              class="form-control"
+              id="taskContent"
+              [(ngModel)]="editableTask().content"
+              name="content"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="taskDescription" class="form-label">Description</label>
+            <textarea
+              class="form-control"
+              id="taskDescription"
+              [(ngModel)]="editableTask().description"
+              name="description"
+            ></textarea>
+          </div>
+          
+          <div class="mb-3">
+            <label for="taskContent" class="form-label">Date</label>
+            <input
+            type="date"
+            class="form-control"
+            id="dueDate"
+            [(ngModel)]="editableTask().dueDate"
+            name="dueDate"
+          />
+          </div>
+
+          <div class="mb-3">
+            <label for="taskPriority" class="form-label">Priority</label>
+            <select
+              class="form-select"
+              id="taskPriority"
+              [(ngModel)]="editableTask().priority"
+              name="priority"
+            >
+              <option value="1">Very Low</option>
+              <option value="2">Low</option>
+              <option value="3">Medium</option>
+              <option value="4">High</option>
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          (click)="saveTask()"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

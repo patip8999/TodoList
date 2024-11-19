@@ -16,6 +16,6 @@ export class ModalComponent {
   @Input() onCancel: () => void = () => {};
   @Output() close = new EventEmitter<void>();
   onClose() {
-    this.close.emit(); // Emituje zdarzenie zamknięcia
+    this.close.emit(); 
   }
 }

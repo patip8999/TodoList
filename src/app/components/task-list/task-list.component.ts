@@ -1,15 +1,21 @@
-import { Component, computed, inject, signal, Signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+  Signal,
+  WritableSignal,
+  computed,
+} from '@angular/core';
 import { TasksService } from '../../Services/tasks.service';
 import { TaskModel } from '../../Models/task.model';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { TrunctePipe } from '../../Pipes/truncte.pipe';
 import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { ModalComponent } from '../UI/modal/modal.component';
 import { CardComponent } from '../UI/card/card.component';
+import { EditTaskModalComponent } from '../edit-task-modal/edit-task-modal.component';
+import { from, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-task-list',
@@ -19,81 +25,78 @@ import { CardComponent } from '../UI/card/card.component';
     AsyncPipe,
     CommonModule,
     FormsModule,
-    HttpClientModule,
     RouterModule,
     ModalComponent,
-    RouterModule,
     CardComponent,
+    EditTaskModalComponent,
   ],
   templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.css'], // Poprawiona nazwa właściwości
+  styleUrls: ['./task-list.component.css'],
   providers: [DatePipe],
 })
 export class TaskListComponent {
-  // Inicjalizacja serwisu
-  private taskService = inject(TasksService);
-  private datePipe = inject(DatePipe);
+  private readonly taskService = inject(TasksService);
+  private readonly datePipe = inject(DatePipe);
 
-  // Sygnały
-  public visibleTaskId = signal<number | undefined>(undefined);
-  public tasksSignal: WritableSignal<TaskModel[]> = signal<TaskModel[]>([]);
-  public selectedTask = signal<TaskModel | undefined>(undefined);
-  public showModal = false;
+  public readonly tasksSignal: WritableSignal<TaskModel[]> = signal<TaskModel[]>([]);
+  public readonly editableTask: WritableSignal<TaskModel | undefined> = signal(undefined);
+  public readonly selectedTask: WritableSignal<TaskModel | undefined> = signal(undefined);
+  public readonly showModal = signal(false);
 
-  // Obsługa ładowania
-  public isLoading: Signal<boolean> = computed(() => this.tasksSignal().length === 0);
+  public readonly isLoading: Signal<boolean> = computed(() => this.tasksSignal().length === 0);
 
-  // Formatowanie daty
   formatDate(date: string | undefined): string {
-    if (!date) {
-      return 'Brak daty';
-    }
-    return new Date(date).toLocaleDateString(); // Przykładowe przetwarzanie daty
+    return date ? new Date(date).toLocaleDateString() : 'Brak daty';
   }
 
-  // Pobieranie zadań z serwisu
-  public tasks$: Observable<TaskModel[]> = this.taskService.getTasks();
+  ngOnInit(): void {
+    this.loadTasks();
+  }
 
-  // Usuwanie zadania
-  deleteTask(taskId: string): void {
-    this.taskService.deleteTask(taskId).subscribe(() => {
-      console.log('Zadanie zostało pomyślnie usunięte.');
-      this.tasks$ = this.taskService.getTasks(); // Odświeżenie zadań
+  loadTasks(): void {
+    this.taskService.getTasks().subscribe((tasks) => {
+      this.tasksSignal.set(tasks);
     });
   }
 
-  // Przełączanie widoczności szczegółów zadania
-  public toggle(taskId: number, task: TaskModel): void {
-    this.visibleTaskId.set(taskId);
-    this.selectedTask.set(task);
+  openEditModal(task: TaskModel): void {
+    this.editableTask.set({ ...task });
+    this.showModal.set(true);
   }
 
-  // Otwieranie modala
-  openModal(task: TaskModel) {
-    this.selectedTask.set(task);
-    this.showModal = true;
+  closeModal(): void {
+    this.showModal.set(false);
   }
 
-  // Zamknięcie modala
-  closeModal() {
-    console.log('Zamykam modal');
-    this.showModal = false;
+  saveTask(updatedTask: TaskModel): void {
+    if (updatedTask) {
+      from(
+        this.taskService.updateTask(
+          updatedTask.id,
+          updatedTask.content,
+          updatedTask.description,
+          updatedTask.dueDate,
+          updatedTask.priority
+        )
+      )
+        .pipe(switchMap(() => this.taskService.getTasks()))
+        .subscribe((updatedTasks: TaskModel[]) => {
+          this.tasksSignal.set(updatedTasks);
+          this.closeModal();
+        });
+    }
   }
 
-  // Zapisywanie zadania
-  saveTask() {
-    console.log('Task saved:', this.selectedTask());
-    this.closeModal();
+  deleteTask(taskId: string): void {
+    this.taskService.deleteTask(taskId).subscribe(() => {
+      this.tasksSignal.set(this.tasksSignal().filter((task) => task.id !== taskId));
+    });
   }
 
-  // Anulowanie edycji
-  cancelEdit() {
-    console.log('Edit cancelled');
-    this.closeModal();
-  }
-  openEditModal(task: TaskModel) {
-    // Tutaj możesz przejść do formularza edycji
-    console.log('Edytowanie zadania', task);
-    // Działania związane z edytowaniem zadania
+  toggleStatus(taskId: string, status: 'Pending' | 'Done'): void {
+    const updatedTasks = this.tasksSignal().map((task) =>
+      task.id === taskId ? { ...task, status } : task
+    );
+    this.tasksSignal.set(updatedTasks);
   }
 }

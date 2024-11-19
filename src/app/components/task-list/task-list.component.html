@@ -2,54 +2,49 @@
   <h2 class="title text-center mb-4">Task List</h2>
 
   <ul class="list-group mb-4">
-    @for (task of tasks$ | async; track task.id) {
+    @for (task of tasksSignal(); track task.id) {
+      <li class="list-group-item d-flex justify-content-between align-items-center border-0 rounded shadow-sm mb-2">
+        <div class="d-flex flex-column">
+          <span>{{ task.content | truncateName }}</span>
 
-    <li
-      class="list-group-item d-flex justify-content-between align-items-center border-0 rounded shadow-sm mb-2"
-      appDragAndDrop
-      [attr.data-index]="task.id"
-      draggable="true"
-    >
-      <div class="d-flex flex-column">
-        <span>{{ task.content | truncateName }}</span>
+          <div class="mt-2">
+            <button
+              class="btn btn-link btn-sm"
+              style="font-size: 0.8rem; text-decoration: none"
+              (click)="selectedTask.set(task)"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              Show more
+            </button>
+          </div>
+        </div>
 
-        <div class="mt-2">
+        <div class="btn-group" role="group">
+          <button class="btn btn-danger btn-sm" (click)="deleteTask(task.id)">
+            Delete
+          </button>
+
+          <button class="btn btn-info btn-sm" [routerLink]="['/detail', task.id]">
+            Description
+          </button>
+
           <button
-            class="btn btn-link btn-sm"
-            style="font-size: 0.8rem; text-decoration: none"
+            class="btn btn-secondary btn-sm"
+            (click)="openEditModal(task)"
+            data-bs-target="#editTaskModal"
             data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-            (click)="toggle(+task.id, task)"
           >
-            Show more
+            Edit Live
           </button>
         </div>
-      </div>
 
-      <div class="btn-group" role="group">
-        <button class="btn btn-danger btn-sm" (click)="deleteTask(task.id)">
-          Delete
-        </button>
-
-        <button class="btn btn-info btn-sm" [routerLink]="['/detail', task.id]">
-          Description
-        </button>
-
-        <button
-          class="btn btn-secondary btn-sm"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-        >
-          Live edit
-        </button>
-      </div>
-
-      @if (task.isDescriptionVisible) {
-      <div class="task-description mt-2">
-        <p>{{ task.description }}</p>
-      </div>
-      }
-    </li>
+        @if (task.isDescriptionVisible) {
+          <div class="task-description mt-2">
+            <p>{{ task.description }}</p>
+          </div>
+        }
+      </li>
     }
   </ul>
 
@@ -60,10 +55,10 @@
   </div>
 </div>
 
-<app-modal [modalTitle]="'Task Detail'" [modalData]="selectedTask">
+<!-- Modal do detali zadania -->
+<app-modal [modalTitle]="'Task Detail'" [modalData]="selectedTask()">
   <div modal-title>Task Details</div>
   <div modal-body>
-    <!-- Dodajemy komponent app-card w modalu -->
     <div class="container mt-5">
       <app-card>
         <div card-title>
@@ -73,47 +68,40 @@
         </div>
 
         @if (selectedTask() ; as task) {
-        <div card-input>
-          <div class="task-detail">
-            <div class="detail-item">
-              <span class="detail-label"><strong>Content:</strong></span>
-              <p class="detail-value">{{ task.content }}</p>
+          <div card-input>
+            <div class="task-detail">
+              <div class="detail-item">
+                <span class="detail-label"><strong>Content:</strong></span>
+                <p class="detail-value">{{ task.content }}</p>
+              </div>
             </div>
-          </div>
 
-          <div class="task-detail">
-            <div class="detail-item">
-              <span class="detail-label"><strong>Description:</strong></span>
-              <p class="detail-value">{{ task.description || 'Brak opisu' }}</p>
+            <div class="task-detail">
+              <div class="detail-item">
+                <span class="detail-label"><strong>Description:</strong></span>
+                <p class="detail-value">{{ task.description || "Brak opisu" }}</p>
+              </div>
             </div>
-          </div>
 
-          <div class="task-detail">
-            <div class="detail-item">
-              <span class="detail-label"><strong>Date:</strong></span>
-              <p class="detail-value">
-                {{ task.due ? formatDate(task.due.date) : 'Brak daty' }}
-              </p>
+            <div class="task-detail">
+              <div class="detail-item">
+                <span class="detail-label"><strong>Date:</strong></span>
+                <p class="detail-value">{{ task.due ? formatDate(task.due.date) : "Brak daty" }}</p>
+              </div>
             </div>
-          </div>
 
-          <div class="task-detail">
-            <div class="detail-item">
-              <span class="detail-label"><strong>Priority:</strong>:</span>
-              <span class="detail-value" [ngClass]="{
-                'high-priority': task.priority === 4,
-                'medium-priority': task.priority === 3,
-                'low-priority': task.priority === 2,
-                'very-low-priority': task.priority === 1
-              }">
-                {{ task.priority }}
-              </span>
+            <div class="task-detail">
+              <div class="detail-item">
+                <span class="detail-label"><strong>Priority:</strong>:</span>
+                <span class="detail-value">
+                  {{ task.priority }}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
         }
         <div card-buttons>
-          <button class="btn btn-light" >Edit</button>
+          <button class="btn btn-light">Edit</button>
         </div>
       </app-card>
     </div>
@@ -122,3 +110,10 @@
     <button class="btn btn-light" data-bs-dismiss="modal">Close</button>
   </div>
 </app-modal>
+
+<!-- Modal do edycji zadania -->
+<app-edit-task-modal
+  [task]="editableTask()"
+  (save)="saveTask($event)"
+  (close)="closeModal()"
+></app-edit-task-modal>
