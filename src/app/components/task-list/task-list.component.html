@@ -2,7 +2,15 @@
   <button class="btn btn-primary" (click)="sortTasksByDate()">Sort by Date</button>
   <button class="btn btn-secondary" (click)="sortTasksByPriority()">Sort by Priority</button>
 </div>
-
+<div class="filter-widget mb-4">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Search tasks..."
+    [(ngModel)]="filterText"
+    (ngModelChange)="filterTasks()"
+  />
+</div>
 <div class="task-list-container container mt-5">
   <h2 class="title text-center mb-4">Task List</h2>
 

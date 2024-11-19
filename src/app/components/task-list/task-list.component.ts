@@ -61,6 +61,7 @@ export class TaskListComponent {
 
   loadTasks(): void {
     this.taskService.getTasks().subscribe((tasks) => {
+      this.originalTasks = tasks;  // Zapisujemy oryginalną listę zadań
       this.tasksSignal.set(tasks);
     });
   }
@@ -142,6 +143,28 @@ export class TaskListComponent {
       case 'medium': return 2;
       case 'low': return 3;
       default: return 4;
+    }
+  }
+  public filterText: string = '';
+  public originalTasks: TaskModel[] = [];
+  // ... existing methods
+
+  // Filtrowanie zadań
+  filterTasks(): void {
+    if (this.filterText === '') {
+      // Jeśli pole wyszukiwania jest puste, przywracamy oryginalną listę zadań
+      this.tasksSignal.set(this.originalTasks);
+    } else {
+      const filteredTasks = this.originalTasks.filter(task => {
+        const searchText = this.filterText.toLowerCase();
+        return (
+          task.content.toLowerCase().includes(searchText) ||
+          (task.description && task.description.toLowerCase().includes(searchText)) ||
+          (task.dueDate && task.dueDate.toLowerCase().includes(searchText)) ||
+          task.priority.toString().toLowerCase().includes(searchText)
+        );
+      });
+      this.tasksSignal.set(filteredTasks);
     }
   }
 }
