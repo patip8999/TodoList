@@ -2,11 +2,12 @@ import { Component, EventEmitter, Input, Output, signal, WritableSignal } from '
 import { TaskModel } from '../../Models/task.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CardComponent } from '../UI/card/card.component';
 
 @Component({
   selector: 'app-edit-task-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CardComponent],
   templateUrl: './edit-task-modal.component.html',
   styleUrl: './edit-task-modal.component.css'
 })
