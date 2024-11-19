@@ -24,6 +24,15 @@
             >
               Show more
             </button>
+            <button
+            class="btn btn-link btn-sm"
+            style="font-size: 0.8rem; text-decoration: none"
+            (click)="openEditModal(task)"
+            data-bs-target="#editTaskModal"
+            data-bs-toggle="modal"
+          >
+            Edit Live
+          </button>
           </div>
         </div>
 
@@ -38,11 +47,9 @@
 
           <button
             class="btn btn-secondary btn-sm"
-            (click)="openEditModal(task)"
-            data-bs-target="#editTaskModal"
-            data-bs-toggle="modal"
+            [routerLink]="['/edit', task.id]"
           >
-            Edit Live
+            Edit
           </button>
         </div>
 
@@ -62,7 +69,7 @@
   </div>
 </div>
 
-<!-- Modal do detali zadania -->
+
 <app-modal [modalTitle]="'Task Detail'" [modalData]="selectedTask()">
   <div modal-title>Task Details</div>
   <div modal-body>

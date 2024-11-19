@@ -30,7 +30,7 @@ import { DragAndDropDirective } from '../../directives/drag-and-drop.directive';
     ModalComponent,
     CardComponent,
     EditTaskModalComponent,
-    DragAndDropDirective
+    DragAndDropDirective,
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css'],
@@ -40,12 +40,16 @@ export class TaskListComponent {
   private readonly taskService = inject(TasksService);
   private readonly datePipe = inject(DatePipe);
 
-  public readonly tasksSignal: WritableSignal<TaskModel[]> = signal<TaskModel[]>([]);
-  public readonly editableTask: WritableSignal<TaskModel | undefined> = signal(undefined);
-  public readonly selectedTask: WritableSignal<TaskModel | undefined> = signal(undefined);
+  public readonly tasksSignal: WritableSignal<TaskModel[]> = signal<
+    TaskModel[]
+  >([]);
+  public readonly editableTask: WritableSignal<TaskModel | undefined> =
+    signal(undefined);
+  public readonly selectedTask: WritableSignal<TaskModel | undefined> =
+    signal(undefined);
   public readonly showModal = signal(false);
 
-  public readonly isLoading: Signal<boolean> = computed(() => this.tasksSignal().length === 0);
+
 
   formatDate(date: string | undefined): string {
     return date ? new Date(date).toLocaleDateString() : 'Brak daty';
@@ -60,19 +64,20 @@ export class TaskListComponent {
       this.tasksSignal.set(tasks);
     });
   }
-  onTaskReordered(event: { from: string, to: string }): void {
-    // Znajdź indeksy zadań na podstawie ich ID
-    const fromIndex = this.tasksSignal().findIndex(task => task.id === event.from);
-    const toIndex = this.tasksSignal().findIndex(task => task.id === event.to);
-  
+  onTaskReordered(event: { from: string; to: string }): void {
+    const fromIndex = this.tasksSignal().findIndex(
+      (task) => task.id === event.from
+    );
+    const toIndex = this.tasksSignal().findIndex(
+      (task) => task.id === event.to
+    );
+
     if (fromIndex !== -1 && toIndex !== -1) {
       const reorderedTasks = [...this.tasksSignal()];
-  
-      // Przemieszczanie zadania w tablicy
+
       const [movedTask] = reorderedTasks.splice(fromIndex, 1);
       reorderedTasks.splice(toIndex, 0, movedTask);
-  
-      // Zaktualizowanie sygnału z nową kolejnością
+
       this.tasksSignal.set(reorderedTasks);
     }
   }
@@ -106,14 +111,11 @@ export class TaskListComponent {
 
   deleteTask(taskId: string): void {
     this.taskService.deleteTask(taskId).subscribe(() => {
-      this.tasksSignal.set(this.tasksSignal().filter((task) => task.id !== taskId));
+      this.tasksSignal.set(
+        this.tasksSignal().filter((task) => task.id !== taskId)
+      );
     });
   }
 
-  toggleStatus(taskId: string, status: 'Pending' | 'Done'): void {
-    const updatedTasks = this.tasksSignal().map((task) =>
-      task.id === taskId ? { ...task, status } : task
-    );
-    this.tasksSignal.set(updatedTasks);
-  }
+
 }
