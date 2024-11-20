@@ -1,29 +1,26 @@
 <div class="filter-sort-container">
-    <div class="filter-section">
-      <button (click)="toggleFilterVisibility()">Toggle Filter</button>
-  
-  
-      @if(filterVisible()) {
-        <input
-          type="text"
-          [(ngModel)]="filterText"
-          (ngModelChange)="onFilterChange($event)"
-          placeholder="Search"
-          class="filter-input"
-        />
-      }
-    </div>
-  
- 
-    <div class="sort-section">
-      @for(key of sortKeys; track key) {
-        <button
-          (click)="onSortChange(key)"
-          [class.active]="sortKey === key"
-        >
-          Sort by {{ key }}
-        </button>
-      }
-    </div>
+  <div class="filter-section">
+    <button (click)="toggleFilterVisibility()">Toggle Filter</button>
+
+    @if(filterVisible()) {
+      <input
+        type="text"
+        [(ngModel)]="filterText"
+        (ngModelChange)="onFilterChange($event)"
+        placeholder="Search"
+        class="filter-input"
+      />
+    }
   </div>
-  
+
+  <div class="sort-section">
+    @for(key of sortKeys; track key) {
+      <button
+        (click)="onSortChange(key)"
+        [class.active]="sortKey === key"
+      >
+        Sort by {{ key }}
+      </button>
+    }
+  </div>
+</div>

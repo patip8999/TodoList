@@ -4,6 +4,7 @@ import {
   signal,
   WritableSignal,
   computed,
+  Signal,
 } from '@angular/core';
 import { TasksService } from '../../Services/tasks.service';
 import { TaskModel } from '../../Models/task.model';
@@ -31,7 +32,7 @@ import { SortAndFilterComponent } from '../UI/sort-and-filter/sort-and-filter.co
     CardComponent,
     EditTaskModalComponent,
     DragAndDropDirective,
-    SortAndFilterComponent
+    SortAndFilterComponent,
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css'],
@@ -41,6 +42,7 @@ export class TaskListComponent {
   private readonly taskService = inject(TasksService);
   private readonly datePipe = inject(DatePipe);
 
+  // Signals
   public readonly tasksSignal: WritableSignal<TaskModel[]> = signal<
     TaskModel[]
   >([]);
@@ -49,25 +51,63 @@ export class TaskListComponent {
   public readonly selectedTask: WritableSignal<TaskModel | undefined> =
     signal(undefined);
   public readonly showModal = signal(false);
+  public readonly filterText: WritableSignal<string> = signal('');
+  public readonly sortKey: WritableSignal<keyof TaskModel | null> =
+    signal(null);
+  public readonly sortOrder: WritableSignal<'asc' | 'desc'> = signal('asc');
+  public originalTasks: TaskModel[] = [];
 
-  formatDate(date: string | undefined): string {
-    return date ? new Date(date).toLocaleDateString() : 'Brak daty';
-  }
+  public filteredAndSortedTasks: Signal<TaskModel[]> = computed(() => {
+    const filter = this.filterText();
+    const tasks = this.tasksSignal();
+
+    const filteredTasks = tasks.filter(
+      (task) =>
+        task.content.toLowerCase().includes(filter.toLowerCase()) ||
+        (task.description &&
+          task.description.toLowerCase().includes(filter.toLowerCase()))
+    );
+
+    const sortedTasks = filteredTasks.sort((a, b) => {
+      const sortKey = this.sortKey();
+      const sortOrder = this.sortOrder();
+
+      if (!sortKey) return 0;
+
+      let valA: any = a[sortKey];
+      let valB: any = b[sortKey];
+
+      if (sortKey === 'dueDate') {
+        valA = a.due ? new Date(a.due.date).getTime() : 0;
+        valB = b.due ? new Date(b.due.date).getTime() : 0;
+      }
+
+      return sortOrder === 'asc' ? valA - valB : valB - valA;
+    });
+
+    return sortedTasks;
+  });
 
   ngOnInit(): void {
     this.loadTasks();
   }
+  formatDate(date: string | undefined): string {
+    return date ? new Date(date).toLocaleDateString() : 'Brak daty';
+  }
 
   loadTasks(): void {
     this.taskService.getTasks().subscribe((tasks) => {
-      this.originalTasks = tasks;  // Zapisujemy oryginalną listę zadań
       this.tasksSignal.set(tasks);
     });
   }
- 
+
   onTaskReordered(event: { from: string; to: string }): void {
-    const fromIndex = this.tasksSignal().findIndex(task => task.id === event.from);
-    const toIndex = this.tasksSignal().findIndex(task => task.id === event.to);
+    const fromIndex = this.tasksSignal().findIndex(
+      (task) => task.id === event.from
+    );
+    const toIndex = this.tasksSignal().findIndex(
+      (task) => task.id === event.to
+    );
 
     if (fromIndex !== -1 && toIndex !== -1) {
       const reorderedTasks = [...this.tasksSignal()];
@@ -76,6 +116,7 @@ export class TaskListComponent {
       this.tasksSignal.set(reorderedTasks);
     }
   }
+
   openEditModal(task: TaskModel): void {
     this.editableTask.set({ ...task });
     this.showModal.set(true);
@@ -113,89 +154,17 @@ export class TaskListComponent {
   }
 
   onFilterChange(filterText: string): void {
-    this.filterText = filterText;
-    this.filterTasks();
+    this.filterText.set(filterText);
   }
 
-  onSortChange({ key, order }: { key: keyof TaskModel; order: 'asc' | 'desc' }): void {
-    this.sortKey = key;
-    this.sortOrder = order;
-    this.sortTasks();
-  }
-  public filterCriteria = {
-    text: '',
-    priority: null as 'high' | 'medium' | 'low' | 'very low' | null,
-    dateRange: { start: null as Date | null, end: null as Date | null },
-  };
-  public filterText: string = '';
-  filterTasks(): void {
-    let filteredTasks = this.originalTasks;
-  
-    // Filtrowanie po tekście
-    if (this.filterCriteria.text) {
-      filteredTasks = filteredTasks.filter((task) =>
-        task.content.toLowerCase().includes(this.filterCriteria.text.toLowerCase())
-      );
-    }
-    const priorityMap: { [key: number]: 'high' | 'medium' | 'low' | 'very low' } = {
-      1: 'high',
-      2: 'medium',
-      3: 'low',
-      4: 'very low'
-    };
-  
-    // Filtrowanie po priorytecie
-    if (this.filterCriteria.priority !== null) {
-      filteredTasks = filteredTasks.filter(
-        (task) => priorityMap[task.priority] === this.filterCriteria.priority
-      );
-    }
-  
-  
-    // Filtrowanie po zakresie dat
-    if (this.filterCriteria.dateRange.start !== null && this.filterCriteria.dateRange.end !== null) {
-      filteredTasks = filteredTasks.filter((task) => {
-        const dueDate = new Date(task.dueDate);
-        return (
-          dueDate >= this.filterCriteria.dateRange.start! &&
-          dueDate <= this.filterCriteria.dateRange.end!
-        );
-      });
-    }
-  
-    this.tasksSignal.set(filteredTasks);
-  }
-  
-  public originalTasks: TaskModel[] = [];
-  public sortKey: keyof TaskModel | null = null;
-  public sortOrder: 'asc' | 'desc' = 'asc';
-  sortTasks(): void {
-    const sortedTasks = [...this.tasksSignal()].sort((a, b) => {
-      if (this.sortKey) {
-        let valA: any = a[this.sortKey];
-        let valB: any = b[this.sortKey];
-  
-        // Sprawdzenie, czy klucz dotyczy daty
-        if (this.sortKey === 'dueDate') {
-          valA = typeof valA === 'string' || typeof valA === 'number' ? new Date(valA).getTime() : 0;
-          valB = typeof valB === 'string' || typeof valB === 'number' ? new Date(valB).getTime() : 0;
-        }
-  
-        // Sprawdzenie, czy klucz dotyczy priorytetu (jako liczba)
-        if (this.sortKey === 'priority') {
-          valA = typeof valA === 'number' ? valA : 0;
-          valB = typeof valB === 'number' ? valB : 0;
-        }
-  
-        if (this.sortOrder === 'asc') {
-          return valA > valB ? 1 : valA < valB ? -1 : 0;
-        } else {
-          return valA < valB ? 1 : valA > valB ? -1 : 0;
-        }
-      }
-      return 0;
-    });
-  
-    this.tasksSignal.set(sortedTasks);
+  onSortChange({
+    key,
+    order,
+  }: {
+    key: keyof TaskModel;
+    order: 'asc' | 'desc';
+  }): void {
+    this.sortKey.set(key);
+    this.sortOrder.set(order);
   }
 }
