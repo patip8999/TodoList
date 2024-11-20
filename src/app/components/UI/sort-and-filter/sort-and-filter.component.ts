@@ -18,29 +18,30 @@ export class SortAndFilterComponent {
 
   @Output() filterChange = new EventEmitter<string>();
   @Output() sortChange = new EventEmitter<{ key: keyof TaskModel; order: 'asc' | 'desc' }>();
+  @Output() priorityFilterChange = new EventEmitter<string>(); // Nowe zdarzenie dla priorytetu
 
   public sortKeys: (keyof TaskModel)[] = ['dueDate', 'priority'];
+  public priorityOptions: string[] = ['High', 'Medium', 'Low', 'very Low']; // Opcje priorytetu, gdzie '' oznacza brak filtra
 
-  // Tworzymy sygnał dla widoczności elementów
   filterVisible = signal(false);
 
-  // Zmieniamy sposób obsługi zmiany filtra
   onFilterChange(value: string): void {
     this.filterChange.emit(value);
   }
 
-  // Zmieniamy sposób obsługi zmiany sortowania
   onSortChange(key: keyof TaskModel): void {
     if (this.sortKey === key) {
-      // Zmieniamy kierunek sortowania, jeśli klikniemy ten sam klucz
       this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
     } else {
-      // Ustawiamy nowy klucz sortowania i domyślny kierunek (rosnąco)
       this.sortKey = key;
       this.sortOrder = 'asc';
     }
-    // Emitujemy zmiany sortowania
     this.sortChange.emit({ key, order: this.sortOrder });
+  }
+
+  onPriorityChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;  // Cast the event.target to HTMLSelectElement
+    this.priorityFilterChange.emit(target.value);  // Now it's safe to access the 'value' property
   }
 
   toggleFilterVisibility() {

@@ -12,6 +12,14 @@
       />
     }
   </div>
+  <select (change)="onPriorityChange($event)">
+    <option value="" disabled selected>Choose priority</option>
+    <option value="all">All</option> 
+    @for(option of priorityOptions; track option) {
+      <option [value]="option">Priority: {{ option || 'All' }}</option>
+    }
+  </select>
+
 
   <div class="sort-section">
     @for(key of sortKeys; track key) {

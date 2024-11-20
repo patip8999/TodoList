@@ -1,4 +1,4 @@
-  <!-- Sortowanie i filtrowanie -->
+
 
 <div class="task-list-container container mt-5">
   <h2 class="title text-center mb-4">Task List</h2>
@@ -9,6 +9,7 @@
   [sortOrder]="sortOrder()"
   (filterChange)="onFilterChange($event)"
   (sortChange)="onSortChange($event)"
+  (priorityFilterChange)="onPriorityFilterChange($event)"  
 ></app-sort-and-filter>
 
   <ul class="list-group mb-4">

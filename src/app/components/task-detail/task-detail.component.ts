@@ -30,6 +30,17 @@ export class TaskDetailComponent {
       });
     }
   }
+   priorityMap: Record<number, string> = {
+    1: 'Very Low',
+    2: 'Low',
+    3: 'Medium',
+    4: 'High'
+  };
+  
+  // Funkcja, która używa mapowania
+  getPriorityLabel(priority: number): string {
+    return this.priorityMap[priority] || 'Unknown';
+  }
   formatDate(date: string): string {
     return this.datePipe.transform(date, 'dd/MM/yyyy') || '';
   }}
