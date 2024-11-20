@@ -12,7 +12,7 @@
       />
     }
   </div>
-  <select (change)="onPriorityChange($event)">
+  <select (change)="onPriorityChange($event)"  class="priority-filter">
     <option value="" disabled selected>Choose priority</option>
     <option value="all">All</option> 
     @for(option of priorityOptions; track option) {

@@ -55,3 +55,27 @@ button.active {
   border-color: white;
   color: white !important;
 }
+.priority-filter {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.priority-filter:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.priority-filter option {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.priority-filter option:disabled {
+  color: #ccc; /* Kolor dla opcji 'Choose priority' */
+}
