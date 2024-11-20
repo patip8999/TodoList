@@ -18,7 +18,7 @@ export class SortAndFilterComponent<T> {
   @Output() filterChanged = new EventEmitter<string>();
   @Output() sortChanged = new EventEmitter<{ key: keyof T, order: 'asc' | 'desc' }>();
 
-  public sortKeys: (keyof T)[] = ['content' as keyof T, 'priority' as keyof T];
+  public sortKeys: (keyof T)[] = ['date' as keyof T, 'priority' as keyof T];
 
 
   // Tworzymy sygnał dla widoczności elementów

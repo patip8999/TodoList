@@ -8,7 +8,7 @@
           type="text"
           [(ngModel)]="filterText"
           (ngModelChange)="onFilterChange($event)"
-          placeholder="Filtruj"
+          placeholder="Search"
           class="filter-input"
         />
       }
@@ -21,7 +21,7 @@
           (click)="onSortChange(key)"
           [class.active]="sortKey === key"
         >
-          Sortuj po {{ key }}
+          Sort by {{ key }}
         </button>
       }
     </div>

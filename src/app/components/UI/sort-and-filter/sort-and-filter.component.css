@@ -28,18 +28,21 @@
 
 button {
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: 30px;
   border: 1px solid transparent;
-  background-color: #007bff; /* Kolor przycisku */
-  color: white;
+  border-color: #254636; 
+  background-color: #ffffff; /* Kolor przycisku */
+  color: #254636;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-weight: 500;
 }
 
 button:hover {
-  background-color: #0056b3; /* Ciemniejszy odcień przy hover */
-  border-color: #0056b3;
+  background-color: #1b3a32; /* Ciemniejszy odcień przy hover */
+  border-color: white;
+  color: white !important;
 }
 
 button:focus {
@@ -48,6 +51,7 @@ button:focus {
 }
 
 button.active {
-  background-color: #28a745; /* Zielony dla aktywnego przycisku */
-  border-color: #28a745;
+  background-color:  #1b3a32; /* Zielony dla aktywnego przycisku */
+  border-color: white;
+  color: white !important;
 }

@@ -122,34 +122,75 @@ export class TaskListComponent {
     this.sortOrder = order;
     this.sortTasks();
   }
+  public filterCriteria = {
+    text: '',
+    priority: null as 'high' | 'medium' | 'low' | 'very low' | null,
+    dateRange: { start: null as Date | null, end: null as Date | null },
+  };
   public filterText: string = '';
   filterTasks(): void {
-    if (this.filterText === '') {
-      this.tasksSignal.set(this.originalTasks);
-    } else {
-      const filteredTasks = this.originalTasks.filter((task) =>
-        task.content.toLowerCase().includes(this.filterText.toLowerCase())
+    let filteredTasks = this.originalTasks;
+  
+    // Filtrowanie po tekście
+    if (this.filterCriteria.text) {
+      filteredTasks = filteredTasks.filter((task) =>
+        task.content.toLowerCase().includes(this.filterCriteria.text.toLowerCase())
       );
-      this.tasksSignal.set(filteredTasks);
     }
+    const priorityMap: { [key: number]: 'high' | 'medium' | 'low' | 'very low' } = {
+      1: 'high',
+      2: 'medium',
+      3: 'low',
+      4: 'very low'
+    };
+  
+    // Filtrowanie po priorytecie
+    if (this.filterCriteria.priority !== null) {
+      filteredTasks = filteredTasks.filter(
+        (task) => priorityMap[task.priority] === this.filterCriteria.priority
+      );
+    }
+  
+  
+    // Filtrowanie po zakresie dat
+    if (this.filterCriteria.dateRange.start !== null && this.filterCriteria.dateRange.end !== null) {
+      filteredTasks = filteredTasks.filter((task) => {
+        const dueDate = new Date(task.dueDate);
+        return (
+          dueDate >= this.filterCriteria.dateRange.start! &&
+          dueDate <= this.filterCriteria.dateRange.end!
+        );
+      });
+    }
+  
+    this.tasksSignal.set(filteredTasks);
   }
+  
   public originalTasks: TaskModel[] = [];
   public sortKey: keyof TaskModel | null = null;
   public sortOrder: 'asc' | 'desc' = 'asc';
   sortTasks(): void {
     const sortedTasks = [...this.tasksSignal()].sort((a, b) => {
       if (this.sortKey) {
-        const valA = a[this.sortKey];
-        const valB = b[this.sortKey];
+        let valA: any = a[this.sortKey];
+        let valB: any = b[this.sortKey];
   
-        // Sprawdzamy, czy valA i valB nie są null lub undefined przed porównaniem
-        const safeValA = valA != null ? valA : ''; // Domyślnie traktujemy null/undefined jako pusty ciąg
-        const safeValB = valB != null ? valB : ''; // To samo dla valB
+        // Sprawdzenie, czy klucz dotyczy daty
+        if (this.sortKey === 'dueDate') {
+          valA = typeof valA === 'string' || typeof valA === 'number' ? new Date(valA).getTime() : 0;
+          valB = typeof valB === 'string' || typeof valB === 'number' ? new Date(valB).getTime() : 0;
+        }
+  
+        // Sprawdzenie, czy klucz dotyczy priorytetu (jako liczba)
+        if (this.sortKey === 'priority') {
+          valA = typeof valA === 'number' ? valA : 0;
+          valB = typeof valB === 'number' ? valB : 0;
+        }
   
         if (this.sortOrder === 'asc') {
-          return safeValA > safeValB ? 1 : (safeValA < safeValB ? -1 : 0);
+          return valA > valB ? 1 : valA < valB ? -1 : 0;
         } else {
-          return safeValA < safeValB ? 1 : (safeValA > safeValB ? -1 : 0);
+          return valA < valB ? 1 : valA > valB ? -1 : 0;
         }
       }
       return 0;
@@ -157,5 +198,4 @@ export class TaskListComponent {
   
     this.tasksSignal.set(sortedTasks);
   }
-  
 }
