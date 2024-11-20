@@ -10,8 +10,8 @@
         placeholder="Search"
         class="filter-input"
       />
-    }
-  </div>
+    
+ 
   <select (change)="onPriorityChange($event)"  class="priority-filter">
     <option value="" disabled selected>Choose priority</option>
     <option value="all">All</option> 
@@ -20,6 +20,8 @@
     }
   </select>
 
+}
+</div>
 
   <div class="sort-section">
     @for(key of sortKeys; track key) {
