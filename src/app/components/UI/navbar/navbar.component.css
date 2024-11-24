@@ -4,20 +4,20 @@
     
   }
   .navbar .navbar-brand {
-    font-size: 1.5rem;  /* Zwiększenie rozmiaru czcionki */
-    font-weight: 700;   /* Pogrubienie tekstu */
-    color: white;      /* Kolor tekstu */
-    text-transform: uppercase; /* Wszystkie litery wielkie */
-    letter-spacing: 1px; /* Dodanie odstępu między literami */
-    display: inline-flex;  /* Użycie inline-flex, aby elementy nie były dzielone na dwie linie */
+    font-size: 1.5rem;  
+    font-weight: 700;  
+    color: white;     
+    text-transform: uppercase; 
+    letter-spacing: 1px; 
+    display: inline-flex;  
     align-items: center;
-    white-space: nowrap;   /* Zapobiegamy łamaniu się tekstu na dwie linie */
-    margin-right: auto;  /* Wyrównanie do lewej strony */
+    white-space: nowrap;  
+    margin-right: auto; 
   }
   
-  /* Stylizacja linku "Task-List" */
+  
   .navbar .navbar-nav .nav-link {
-    color: white !important; /* Zmieniamy kolor na biały */
+    color: white !important; 
     font-weight: 700;
     text-transform: capitalize;
     font-size: 1rem;
@@ -26,9 +26,9 @@
     align-items: center;
   }
   
-  /* Efekt hover na linkach */
+  
   .navbar .navbar-nav .nav-link:hover {
-    color: #004d40 !important; /* Ciemniejszy zielony przy hover */
+    color: #004d40 !important; 
   }
   
   
@@ -53,10 +53,10 @@
     }
   }
   .navbar-date {
-    font-family: 'Arial', sans-serif; /* Elegancka czcionka */
-    font-size: 16px; /* Dopasuj rozmiar */
-    color: white; /* Biały kolor tekstu */
-    white-space: nowrap; /* Zapobiega zawijaniu tekstu */
-    display: flex; /* Wyrównanie w jednej linii */
-    align-items: center; /* Wyśrodkowanie względem wysokości */
+    font-family: 'Arial', sans-serif; /
+    font-size: 16px; 
+    color: white; 
+    white-space: nowrap; 
+    display: flex;
+    align-items: center; 
   }

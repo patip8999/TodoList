@@ -18,10 +18,10 @@ export class SortAndFilterComponent {
 
   @Output() filterChange = new EventEmitter<string>();
   @Output() sortChange = new EventEmitter<{ key: keyof TaskModel; order: 'asc' | 'desc' }>();
-  @Output() priorityFilterChange = new EventEmitter<string>(); // Nowe zdarzenie dla priorytetu
+  @Output() priorityFilterChange = new EventEmitter<string>(); 
 
   public sortKeys: (keyof TaskModel)[] = ['dueDate', 'priority'];
-  public priorityOptions: string[] = ['High', 'Medium', 'Low', 'very Low']; // Opcje priorytetu, gdzie '' oznacza brak filtra
+  public priorityOptions: string[] = ['High', 'Medium', 'Low', 'very Low']; 
 
   filterVisible = signal(false);
 
@@ -40,8 +40,8 @@ export class SortAndFilterComponent {
   }
 
   onPriorityChange(event: Event): void {
-    const target = event.target as HTMLSelectElement;  // Cast the event.target to HTMLSelectElement
-    this.priorityFilterChange.emit(target.value);  // Now it's safe to access the 'value' property
+    const target = event.target as HTMLSelectElement;  
+    this.priorityFilterChange.emit(target.value);  
   }
 
   toggleFilterVisibility() {

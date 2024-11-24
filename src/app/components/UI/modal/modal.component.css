@@ -1,14 +1,14 @@
-/* Stylizacja kontenera modala */
+
 .task-modal-content {
-    background: linear-gradient(135deg, #e0f7fa, #254636); /* Gradient z błękitu do zieleni */
-    border-radius: 12px; /* Zaokrąglone rogi */
-    color: white; /* Kolor tekstu */
-    border: none; /* Brak ramki */
+    background: linear-gradient(135deg, #e0f7fa, #254636); 
+    border-radius: 12px; 
+    color: white; 
+    border: none; 
   }
   
-  /* Nagłówek modala */
+  
   .task-modal-content .modal-header {
-    background-color: #254636; /* Buttle Green */
+    background-color: #254636; 
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     padding: 15px 25px;
@@ -17,7 +17,7 @@
     color: white;
   }
   
-  /* Ikona zamknięcia w nagłówku */
+  
   .task-modal-content .modal-header .btn-close {
     color: white;
     background: transparent;
@@ -30,18 +30,18 @@
     opacity: 1;
   }
   
-  /* Ciało modala */
+  
   .task-modal-content .modal-body {
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.1); /* Półprzezroczyste tło */
+    background-color: rgba(255, 255, 255, 0.1); 
     border-radius: 10px;
     font-size: 1rem;
   }
   
-  /* Formatyowanie inputów, textarea, select w modalach */
+
   .task-modal-content .modal-body label {
     font-weight: 500;
-    color: #333; /* Kolor tekstu dla label */
+    color: #333; 
     font-size: 1rem;
   }
   
@@ -51,24 +51,24 @@
     width: 100%;
     padding: 10px;
     margin-top: 8px;
-    background-color: #ffffff; /* Jasne tło dla formularza */
+    background-color: #ffffff; 
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 1rem;
   }
   
   .task-modal-content .modal-body textarea {
-    resize: vertical; /* Pozwól na zmianę rozmiaru w pionie */
+    resize: vertical;
   }
   
   .task-modal-content .modal-body input:focus,
   .task-modal-content .modal-body textarea:focus,
   .task-modal-content .modal-body select:focus {
-    border-color: #388e3c; /* Kolor obramowania przy fokusu */
+    border-color: #388e3c; 
     outline: none;
   }
   
-  /* Stopka modala */
+  
   .task-modal-content .modal-footer {
     background-color: #254636;
     border-bottom-left-radius: 12px;
@@ -77,9 +77,9 @@
     text-align: right;
   }
   
-  /* Przyciski w stopce */
+  
   .task-modal-content .modal-footer .btn {
-    background-color: #388e3c; /* Zielony */
+    background-color: #388e3c; 
     color: white;
     border-radius: 25px;
     padding: 8px 20px;
@@ -88,10 +88,10 @@
   }
   
   .task-modal-content .modal-footer .btn:hover {
-    background-color: #2c6b2f; /* Ciemniejszy zielony */
+    background-color: #2c6b2f; 
   }
   
-  /* Stylizacja dla pól "Data" i "Priorytet" podobnych do formularza */
+
   .task-modal-content .modal-body input[type="date"],
   .task-modal-content .modal-body select {
     background-color: #ffffff;
@@ -108,7 +108,7 @@
     outline: none;
   }
   
-  /* Dostosowanie tła w modalach na urządzeniach mobilnych */
+ 
   @media (max-width: 768px) {
     .task-modal-content .modal-body {
       padding: 15px;
@@ -119,17 +119,16 @@
     }
   }
   .task-modal-content .modal-footer .btn-primary {
-    background-color: #254636 !important; /* Buttle Green */
-    color: white !important; /* Kolor tekstu */
+    background-color: #254636 !important; 
+    color: white !important; 
     border-radius: 25px;
     padding: 8px 20px;
     border: none;
     transition: background-color 0.3s ease;
   }
   
-  /* Hover - ciemniejszy zielony */
   .task-modal-content .modal-footer .btn-primary:hover {
-    background-color: #1b3a32 !important; /* Ciemniejszy zielony przy hover */
-    border-color: #1b3a32 !important; /* Ciemniejszy zielony kontur */
+    background-color: #1b3a32 !important; 
+    border-color: #1b3a32 !important; 
   }
   

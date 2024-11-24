@@ -55,15 +55,15 @@ export class TaskListComponent {
   public readonly sortKey: WritableSignal<keyof TaskModel | null> =
     signal(null);
   public readonly sortOrder: WritableSignal<'asc' | 'desc'> = signal('asc');
-  public readonly filterPriority: WritableSignal<string> = signal('');  // Nowy sygnał na filtr priorytetu
+  public readonly filterPriority: WritableSignal<string> = signal('');
   public originalTasks: TaskModel[] = [];
 
   private priorityMap: { [key: string]: number } = {
-    'High':4 ,
-    'Medium': 3,
-    'Low': 2,
+    High: 4,
+    Medium: 3,
+    Low: 2,
     'very Low': 1,
-    '': -1 // -1 oznacza brak filtra
+    '': -1,
   };
 
   public filteredAndSortedTasks: Signal<TaskModel[]> = computed(() => {
@@ -74,8 +74,11 @@ export class TaskListComponent {
     let filteredTasks = tasks.filter(
       (task) =>
         (task.content.toLowerCase().includes(filter.toLowerCase()) ||
-          (task.description && task.description.toLowerCase().includes(filter.toLowerCase()))) &&
-        (priorityFilter ? task.priority === this.priorityMap[priorityFilter] : true)  // Porównanie po liczbach
+          (task.description &&
+            task.description.toLowerCase().includes(filter.toLowerCase()))) &&
+        (priorityFilter
+          ? task.priority === this.priorityMap[priorityFilter]
+          : true)
     );
 
     const sortedTasks = filteredTasks.sort((a, b) => {
@@ -179,10 +182,8 @@ export class TaskListComponent {
   }
   onPriorityFilterChange(priority: string): void {
     if (priority === 'all') {
-      // Jeśli wybrano "All", resetujemy filtr
       this.filterPriority.set('');
     } else {
-      // Jeśli wybrano konkretny priorytet, ustawiamy go
       this.filterPriority.set(priority);
     }
   }

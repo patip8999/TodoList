@@ -38,7 +38,7 @@ export class TasksService {
     return this.api.updateTask(taskId, {
       content: content,
       description: description,
-      dueDate: dueDate, // Poprawne pole do ustawiania daty
+      dueDate: dueDate, 
       priority: priority,
     });
   }

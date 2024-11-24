@@ -37,7 +37,7 @@ export class TaskDetailComponent {
     4: 'High'
   };
   
-  // Funkcja, która używa mapowania
+
   getPriorityLabel(priority: number): string {
     return this.priorityMap[priority] || 'Unknown';
   }

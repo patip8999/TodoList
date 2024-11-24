@@ -1,14 +1,14 @@
 .btn-primary {
-    background-color: #254636; /* Base color for normal state */
-    color: white; /* Text color */
+    background-color: #254636; 
+    color: white; 
     border-radius: 25px;
     padding: 8px 20px;
     border: none;
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    transition: background-color 0.3s ease; 
 }
 
 .btn-primary:hover {
-    background-color: #1b3a32; /* Darker color on hover */
+    background-color: #1b3a32; 
 }
 .btn-secondary {
     border-radius: 25px;
