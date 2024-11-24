@@ -2,15 +2,10 @@
 
 <div class="task-list-container container mt-5">
   <h2 class="title text-center mb-4">Task List</h2>
-  <app-sort-and-filter
-  [items]="tasksSignal()"
-  [filterText]="filterText()"
-  [sortKey]="sortKey()"
-  [sortOrder]="sortOrder()"
-  (filterChange)="onFilterChange($event)"
-  (sortChange)="onSortChange($event)"
-  (priorityFilterChange)="onPriorityFilterChange($event)"  
-></app-sort-and-filter>
+  <app-filter-sort 
+  [tasks]="tasksSignal()" 
+  (filteredAndSortedTasksChange)="onFilteredAndSortedTasksChange($event)">
+</app-filter-sort>
 
   <ul class="list-group mb-4">
     @for (task of filteredAndSortedTasks(); track task.id) {

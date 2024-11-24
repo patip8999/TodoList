@@ -17,7 +17,8 @@ import { CardComponent } from '../UI/card/card.component';
 import { EditTaskModalComponent } from '../edit-task-modal/edit-task-modal.component';
 import { from, switchMap } from 'rxjs';
 import { DragAndDropDirective } from '../../directives/drag-and-drop.directive';
-import { SortAndFilterComponent } from '../UI/sort-and-filter/sort-and-filter.component';
+
+import { FilterSortComponent } from '../filter-sort/filter-sort.component';
 
 @Component({
   selector: 'app-task-list',
@@ -32,7 +33,8 @@ import { SortAndFilterComponent } from '../UI/sort-and-filter/sort-and-filter.co
     CardComponent,
     EditTaskModalComponent,
     DragAndDropDirective,
-    SortAndFilterComponent,
+ 
+    FilterSortComponent
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css'],
@@ -51,55 +53,15 @@ export class TaskListComponent {
   public readonly selectedTask: WritableSignal<TaskModel | undefined> =
     signal(undefined);
   public readonly showModal = signal(false);
-  public readonly filterText: WritableSignal<string> = signal('');
-  public readonly sortKey: WritableSignal<keyof TaskModel | null> =
-    signal(null);
-  public readonly sortOrder: WritableSignal<'asc' | 'desc'> = signal('asc');
-  public readonly filterPriority: WritableSignal<string> = signal('');
-  public originalTasks: TaskModel[] = [];
+  public readonly filteredAndSortedTasks: WritableSignal<TaskModel[]> = signal([]);
 
-  private priorityMap: { [key: string]: number } = {
-    High: 4,
-    Medium: 3,
-    Low: 2,
-    'very Low': 1,
-    '': -1,
-  };
 
-  public filteredAndSortedTasks: Signal<TaskModel[]> = computed(() => {
-    const filter = this.filterText();
-    const priorityFilter = this.filterPriority();
-    const tasks = this.tasksSignal();
 
-    let filteredTasks = tasks.filter(
-      (task) =>
-        (task.content.toLowerCase().includes(filter.toLowerCase()) ||
-          (task.description &&
-            task.description.toLowerCase().includes(filter.toLowerCase()))) &&
-        (priorityFilter
-          ? task.priority === this.priorityMap[priorityFilter]
-          : true)
-    );
+ 
+  onFilteredAndSortedTasksChange(filteredAndSortedTasks: TaskModel[]): void {
+    this.filteredAndSortedTasks.set(filteredAndSortedTasks);
+  }
 
-    const sortedTasks = filteredTasks.sort((a, b) => {
-      const sortKey = this.sortKey();
-      const sortOrder = this.sortOrder();
-
-      if (!sortKey) return 0;
-
-      let valA: any = a[sortKey];
-      let valB: any = b[sortKey];
-
-      if (sortKey === 'dueDate') {
-        valA = a.due ? new Date(a.due.date).getTime() : 0;
-        valB = b.due ? new Date(b.due.date).getTime() : 0;
-      }
-
-      return sortOrder === 'asc' ? valA - valB : valB - valA;
-    });
-
-    return sortedTasks;
-  });
 
   ngOnInit(): void {
     this.loadTasks();
@@ -107,13 +69,12 @@ export class TaskListComponent {
   formatDate(date: string | undefined): string {
     return date ? new Date(date).toLocaleDateString() : 'Brak daty';
   }
-
   loadTasks(): void {
     this.taskService.getTasks().subscribe((tasks) => {
       this.tasksSignal.set(tasks);
+      this.filteredAndSortedTasks.set(tasks);
     });
   }
-
   onTaskReordered(event: { from: string; to: string }): void {
     const fromIndex = this.tasksSignal().findIndex(
       (task) => task.id === event.from
@@ -166,25 +127,6 @@ export class TaskListComponent {
     });
   }
 
-  onFilterChange(filterText: string): void {
-    this.filterText.set(filterText);
-  }
-
-  onSortChange({
-    key,
-    order,
-  }: {
-    key: keyof TaskModel;
-    order: 'asc' | 'desc';
-  }): void {
-    this.sortKey.set(key);
-    this.sortOrder.set(order);
-  }
-  onPriorityFilterChange(priority: string): void {
-    if (priority === 'all') {
-      this.filterPriority.set('');
-    } else {
-      this.filterPriority.set(priority);
-    }
-  }
+ 
+ 
 }

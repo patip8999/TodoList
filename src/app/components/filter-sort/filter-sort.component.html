@@ -1,0 +1,38 @@
+<div class="filter-sort-container">
+  <div class="filter-section">
+    <button (click)="toggleFilterVisibility()">Toggle Filter</button>
+
+    @if(filterVisible()) {
+    <input
+      type="text"
+      [(ngModel)]="filterText"
+      (ngModelChange)="onFilterTextChange()"
+      placeholder="Search"
+      class="filter-input"
+    />
+
+    <select (change)="onPriorityFilterChange($event)" class="priority-filter">
+      <option value="" disabled selected>Choose priority</option>
+      <option value="all">All</option>
+      @for(option of priorityOptions; track option) {
+      <option [value]="option">Priority: {{ option || "All" }}</option>
+      }
+    </select>
+    }
+  </div>
+
+  <div class="sort-section">
+    <button
+      (click)="onSortChange('dueDate')"
+      [class.active]="sortKey === 'dueDate'"
+    >
+      Sort by Date
+    </button>
+    <button
+      (click)="onSortChange('priority')"
+      [class.active]="sortKey === 'priority'"
+    >
+      Sort by Priority
+    </button>
+  </div>
+</div>
